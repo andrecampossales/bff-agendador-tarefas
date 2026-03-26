@@ -11,17 +11,19 @@ import java.util.Objects;
 
 public class FeignError implements ErrorDecoder {
 
+    private static final String ERRO = "Erro: ";
+
     @Override
     public Exception decode(String s, Response response) {
 
         String mensagemErro = mensagemErro(response);
 
         return switch (response.status()) {
-            case 409 -> new ConflictException("Erro: " + mensagemErro);
-            case 403 -> new ResourceNotFoundException("Erro: " + mensagemErro);
-            case 401 -> new UnauthorizedException("Erro: " + mensagemErro);
-            case 400 -> new IllegalArgumentException("Erro: " + mensagemErro);
-            default -> new BusinessException("Erro: " + mensagemErro);
+            case 409 -> new ConflictException(ERRO + mensagemErro);
+            case 403 -> new ResourceNotFoundException(ERRO + mensagemErro);
+            case 401 -> new UnauthorizedException(ERRO + mensagemErro);
+            case 400 -> new IllegalArgumentException(ERRO + mensagemErro);
+            default -> new BusinessException(ERRO + mensagemErro);
         };
     }
 
